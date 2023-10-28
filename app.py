@@ -41,7 +41,7 @@ class app:
 
         self.startPageInfo = tk.Label(
             self.startPage,
-            text="시작하려면 화면을 클릭하세요",
+            text="시작하려면 화면을 터치하세요",
             font=("Arial", 30),
             fg="black",
         )
@@ -103,7 +103,7 @@ class app:
         self.index = 0
 
         self.timerLabel = tk.Label(
-            self.cameraPage, text=f"{self.index + 1}번째 사진! {self.timer}초 뒤 촬영합니다.", font=("Arial", 100), fg="black", bg="white"
+            self.cameraPage, text=f"{self.index + 1}번째 사진!\n{self.timer}초 뒤 촬영합니다.", font=("Arial", 60), fg="black", bg="white"
         )
         self.timerLabel.pack()
 
@@ -111,7 +111,7 @@ class app:
 
     def updateTimer(self):
         self.timer -= 1
-        self.timerLabel.configure(text=f"{self.index + 1}번째 사진! {self.timer}초 뒤 촬영합니다.")
+        self.timerLabel.configure(text=f"{self.index + 1}번째 사진!\n{self.timer}초 뒤 촬영합니다.")
 
         if self.timer > 0:
             self.window.after(1000, self.updateTimer)
@@ -193,17 +193,17 @@ class app:
 
         self.req = json.loads(self.req.text)
 
-        self.resultImage = Image.open(BytesIO(base64.b64decode(self.req["image"])))
+        self.image = Image.open(BytesIO(base64.b64decode(self.req["image"])))
         self.printImage = Image.open(BytesIO(base64.b64decode(self.req["printImage"])))
 
-        self.resultImage = self.resultImage.resize((int(1200 / 3.5), int(3552 / 3.5)), Image.LANCZOS)
+        self.resultImage = self.printImage.resize((int(1200 / 2), int(3552 / 4)), Image.LANCZOS)
         self.resultImage = ImageTk.PhotoImage(self.resultImage)
         self.resultLabel = tk.Label(self.resultPage, image=self.resultImage)
         self.resultLabel.pack(pady=100)
 
         self.window.update()
         self.printer()
-        sleep(10)
+        sleep(30)
 
         self.window.destroy()
         app()
