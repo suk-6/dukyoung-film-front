@@ -98,7 +98,7 @@ class app:
 
         self.window.after(10, self.updateCamera)
 
-        self.defaultTimer = 10
+        self.defaultTimer = 8
         self.timer = self.defaultTimer
         self.index = 0
 
