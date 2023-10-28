@@ -63,12 +63,12 @@ class app:
         self.framePage.pack(expand=True)
 
         # Load frames
-        self.frameCount = 4
+        self.frameCount = len([s for s in os.listdir("./frames") if s.endswith(".png")])
         self.frames = []
 
         for i in range(self.frameCount):
             original = Image.open(f"./frames/frame{i}.png")
-            resized = original.resize((int(1200 / 4), int(3552 / 4)), Image.LANCZOS)
+            resized = original.resize((int(1200 / 4.7), int(3552 / 4.7)), Image.LANCZOS)
             image = ImageTk.PhotoImage(resized)
 
             self.frames.append(image)
