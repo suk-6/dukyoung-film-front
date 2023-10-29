@@ -159,7 +159,7 @@ class app:
 
     def centerCrop(self, image):
         height, width = image.shape[:2]
-        targetHeight, targetWidth = 700, 1100
+        targetHeight, targetWidth = 650, 1000
 
         top = (height - targetHeight) // 2
         left = (width - targetWidth) // 2
