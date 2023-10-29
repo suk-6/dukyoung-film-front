@@ -7,7 +7,7 @@ import os
 from dotenv import load_dotenv
 import json
 from io import BytesIO
-from time import sleep
+from printer import printer
 
 load_dotenv()
 
@@ -82,9 +82,26 @@ class app:
 
         self.window.update()
 
+    def readyCamera(self):
+        self.readyPage = tk.Frame(self.window, bg="white")
+        self.readyPage.pack(expand=True)
+
+        self.readyPageTitle = tk.Label(
+            self.readyPage,
+            text="준비 중...",
+            font=("Arial", 100),
+            fg="black",
+            bg="white",
+        )
+        self.readyPageTitle.pack(pady=100)
+
+        self.window.update()
+
     def startCamera(self, event, frame):
         self.framePage.destroy()
         self.frame = frame
+
+        self.readyCamera()
 
         self.cameraPage = tk.Frame(self.window, bg="white")
         self.cameraPage.pack(expand=True)
@@ -97,8 +114,9 @@ class app:
         self.images = ["", "", "", ""]
 
         self.window.after(10, self.updateCamera)
+        self.readyPage.destroy()
 
-        self.defaultTimer = 8
+        self.defaultTimer = 1
         self.timer = self.defaultTimer
         self.index = 0
 
@@ -139,7 +157,7 @@ class app:
 
     def centerCrop(self, image):
         height, width = image.shape[:2]
-        targetHeight, targetWidth = 784, 1232
+        targetHeight, targetWidth = 650, 1050
 
         top = (height - targetHeight) // 2
         left = (width - targetWidth) // 2
@@ -203,15 +221,18 @@ class app:
 
         self.window.update()
         self.printer()
-        sleep(30)
 
-        self.window.destroy()
-        app()
+        self.window.after(30000, self.restart)
 
     def printer(self):
-        pass
+        self.printImage.save(f"./print/{self.req['id']}.png")
+        self.printImage.save(os.path.join('print', f"{self.req['id']}.png"))
+        
+        printer(os.path.join('print', f"{self.req['id']}.png"))
 
-        # TODO: Print image
+    def restart(self):
+        self.window.destroy()
+        app()
 
     def toggleFullScreen(self, event):
         self.fullScreenState = not self.fullScreenState
@@ -223,4 +244,7 @@ class app:
 
 
 if __name__ == "__main__":
+    if os.path.exists("print") == False:
+        os.mkdir("print")
+
     app = app()
