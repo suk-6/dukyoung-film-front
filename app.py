@@ -107,6 +107,8 @@ class app:
         self.cameraPage.pack(expand=True)
 
         self.camera = cv2.VideoCapture(0)
+        self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+        self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
         self.cameraLabel = tk.Label(self.cameraPage)
         self.cameraLabel.pack()
