@@ -225,7 +225,6 @@ class app:
         self.window.after(30000, self.restart)
 
     def printer(self):
-        self.printImage.save(f"./print/{self.req['id']}.png")
         self.printImage.save(os.path.join('print', f"{self.req['id']}.png"))
         
         printer(os.path.join('print', f"{self.req['id']}.png"))
