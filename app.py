@@ -68,7 +68,7 @@ class app:
 
         for i in range(self.frameCount):
             original = Image.open(f"./frames/frame{i}.png")
-            resized = original.resize((int(1200 / 4.7), int(3552 / 4.7)), Image.LANCZOS)
+            resized = original.resize((int(1200 / 4.7), int(3600 / 4.7)), Image.LANCZOS)
             image = ImageTk.PhotoImage(resized)
 
             self.frames.append(image)
@@ -159,7 +159,7 @@ class app:
 
     def centerCrop(self, image):
         height, width = image.shape[:2]
-        targetHeight, targetWidth = 650, 1050
+        targetHeight, targetWidth = 700, 1100
 
         top = (height - targetHeight) // 2
         left = (width - targetWidth) // 2
