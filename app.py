@@ -116,7 +116,7 @@ class app:
         self.window.after(10, self.updateCamera)
         self.readyPage.destroy()
 
-        self.defaultTimer = 1
+        self.defaultTimer = 8
         self.timer = self.defaultTimer
         self.index = 0
 
