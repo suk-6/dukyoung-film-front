@@ -68,7 +68,8 @@ class app:
 
         for i in range(self.frameCount):
             original = Image.open(f"./frames/frame{i}.png")
-            resized = original.resize((int(1200 / 4.7), int(3600 / 4.7)), Image.LANCZOS)
+            crop = original.crop((50, 100, 1150, 3500))
+            resized = crop.resize((int(1150 / 4.7), int(3500 / 4.7)), Image.LANCZOS)
             image = ImageTk.PhotoImage(resized)
 
             self.frames.append(image)
