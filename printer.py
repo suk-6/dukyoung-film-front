@@ -2,17 +2,17 @@ import win32print
 import win32api
 import os
 
+printerName = win32print.GetDefaultPrinter()
+hprinter = win32print.OpenPrinter(printerName)
+printerInfo = win32print.GetPrinter(hprinter, 2)
+printerInfo['pPortName'] = printerName
+printerInfo['pDatatype'] = 'RAW'
+
 def printer(file):
-    printerName = win32print.GetDefaultPrinter()
 
     if not os.path.isfile(file):
         return False
     else:
-        hprinter = win32print.OpenPrinter(printerName)
-        printerInfo = win32print.GetPrinter(hprinter, 2)
-        printerInfo['pPortName'] = printerName
-        printerInfo['pDatatype'] = 'RAW'
-        
         win32print.StartDocPrinter(hprinter, 1, ('Print Job', None, 'RAW'))
         win32print.StartPagePrinter(hprinter)
         with open(file, 'rb') as f:
@@ -20,3 +20,6 @@ def printer(file):
         win32print.EndPagePrinter(hprinter)
         win32print.EndDocPrinter(hprinter)
         win32print.ClosePrinter(hprinter)
+
+if __name__ == "__main__":
+    print(printerInfo)
