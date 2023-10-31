@@ -218,6 +218,7 @@ class app:
         self.resultPage.pack(expand=True)
 
         self.req = json.loads(self.req.text)
+        print(f"ID: {self.req['id']}, TIME: {self.req['time']}")
 
         self.image = Image.open(BytesIO(base64.b64decode(self.req["image"])))
         self.printImage = Image.open(BytesIO(base64.b64decode(self.req["printImage"])))
@@ -256,4 +257,6 @@ class app:
 
 
 if __name__ == "__main__":
+    print("Dukyoung Film Starting...")
+    print(PROCESSING_URL)
     app = app()
