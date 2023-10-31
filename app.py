@@ -119,7 +119,7 @@ class app:
         self.window.after(10, self.updateCamera)
         self.readyPage.destroy()
 
-        self.defaultTimer = 8
+        self.defaultTimer = 1
         self.timer = self.defaultTimer
         self.index = 0
 
@@ -201,7 +201,12 @@ class app:
         self.window.update()
 
         # Process images
-        self.req = requests.post(PROCESSING_URL, json={"images": self.images, "frame": self.frame})
+        try:
+            self.req = requests.post(PROCESSING_URL, json={"images": self.images, "frame": self.frame})
+        except Exception as e:
+            print(f"Processing failed!\n{e}")
+            self.processPageTitle.configure(text="처리 실패!")
+            return
 
         self.processPageTitle.configure(text="처리 완료!")
         self.window.after(2000, self.showImage)
