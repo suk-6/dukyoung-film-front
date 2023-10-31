@@ -7,7 +7,7 @@ import os
 from dotenv import load_dotenv
 import json
 from io import BytesIO
-from printer import printer
+import platform
 
 load_dotenv()
 
@@ -223,13 +223,18 @@ class app:
         self.resultLabel.pack(pady=100)
 
         self.window.update()
-        self.printer()
+        if platform.system() == "Windows":
+            self.printer()
 
         self.window.after(30000, self.restart)
 
     def printer(self):
+        if os.path.exists("print") == False:
+            os.mkdir("print")
+
         self.printImage.save(os.path.join('print', f"{self.req['id']}.png"))
         
+        from printer import printer
         printer(os.path.join('print', f"{self.req['id']}.png"))
 
     def restart(self):
@@ -246,7 +251,4 @@ class app:
 
 
 if __name__ == "__main__":
-    if os.path.exists("print") == False:
-        os.mkdir("print")
-
     app = app()
