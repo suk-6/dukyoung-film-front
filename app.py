@@ -203,6 +203,7 @@ class app:
         # Process images
         try:
             self.req = requests.post(PROCESSING_URL, json={"images": self.images, "frame": self.frame})
+            self.req = json.loads(self.req.text)
         except Exception as e:
             print(f"Processing failed!\n{e}")
             self.processPageTitle.configure(text="처리 실패!")
@@ -217,7 +218,6 @@ class app:
         self.resultPage = tk.Frame(self.window, bg="white")
         self.resultPage.pack(expand=True)
 
-        self.req = json.loads(self.req.text)
         print(f"ID: {self.req['id']}, TIME: {self.req['time']}")
 
         self.image = Image.open(BytesIO(base64.b64decode(self.req["image"])))
