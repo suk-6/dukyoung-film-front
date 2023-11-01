@@ -18,10 +18,11 @@ def printer(file):
         win32print.StartPagePrinter(hprinter)
         with open(file, 'rb') as f:
             win32api.ShellExecute(0, 'print', file, None, '.', 0)
-            pyautogui.press('enter')
         win32print.EndPagePrinter(hprinter)
         win32print.EndDocPrinter(hprinter)
         win32print.ClosePrinter(hprinter)
+        pyautogui.press('enter')
+        pyautogui.press('enter')
 
 if __name__ == "__main__":
     print(printerInfo)
