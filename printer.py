@@ -2,6 +2,7 @@ import win32print
 import win32api
 import os
 import pyautogui
+import time
 
 printerName = win32print.GetDefaultPrinter()
 hprinter = win32print.OpenPrinter(printerName)
@@ -21,7 +22,7 @@ def printer(file):
         win32print.EndPagePrinter(hprinter)
         win32print.EndDocPrinter(hprinter)
         win32print.ClosePrinter(hprinter)
-        pyautogui.press('enter')
+        time.sleep(1)
         pyautogui.press('enter')
 
 if __name__ == "__main__":

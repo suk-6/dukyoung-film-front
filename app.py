@@ -232,7 +232,7 @@ class app:
         if platform.system() == "Windows":
             self.printer()
 
-        self.window.after(30000, self.restart)
+        self.window.after(10000, self.restart)
 
     def printer(self):
         if os.path.exists("print") == False:
