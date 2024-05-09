@@ -230,9 +230,8 @@ class app:
         print(f"ID: {self.req['id']}, TIME: {self.req['time']}")
 
         self.image = Image.open(BytesIO(base64.b64decode(self.req["image"])))
-        self.printImage = Image.open(BytesIO(base64.b64decode(self.req["printImage"])))
 
-        self.resultImage = self.printImage.resize(
+        self.resultImage = self.image.resize(
             (int(1200 / 2), int(3552 / 4)), Image.LANCZOS
         )
         self.resultImage = ImageTk.PhotoImage(self.resultImage)
@@ -249,7 +248,7 @@ class app:
         if os.path.exists("print") == False:
             os.mkdir("print")
 
-        self.printImage.save(os.path.join("print", f"{self.req['id']}.png"))
+        self.image.save(os.path.join("print", f"{self.req['id']}.png"))
 
         from printer import printer
 
