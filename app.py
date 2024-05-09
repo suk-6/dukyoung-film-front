@@ -16,6 +16,7 @@ PROCESSING_URL = os.getenv("PROCESSING_URL")
 
 class app:
     def __init__(self):
+        self.defaultTimer = 8
         self.window = tk.Tk()
         self.window.title("Dukyoung Film")
 
@@ -122,7 +123,6 @@ class app:
         self.window.after(10, self.updateCamera)
         self.readyPage.destroy()
 
-        self.defaultTimer = 8
         self.timer = self.defaultTimer
         self.index = 0
 
