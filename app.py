@@ -13,6 +13,9 @@ load_dotenv()
 
 PROCESSING_URL = os.getenv("PROCESSING_URL")
 
+if platform.system() == "Windows":
+    from playsound import playsound
+
 
 class app:
     def __init__(self):
@@ -157,6 +160,9 @@ class app:
                 self.processImages()
 
     def takePhoto(self):
+        if platform.system() == "Windows":
+            playsound("./static/shutter.mp3")
+
         _, image = self.camera.read()
         image = cv2.flip(image, 1)
         image = self.centerCrop(image)
