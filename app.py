@@ -24,6 +24,7 @@ class app:
 
         # Full Screen
         self.window.attributes("-fullscreen", True)
+        self.window.geometry("1920x1080")
         self.fullScreenState = True
         self.window.bind("f", self.toggleFullScreen)
         self.window.bind("<Escape>", self.quitFullScreen)
@@ -67,8 +68,9 @@ class app:
 
         for i in range(self.frameCount):
             original = Image.open(f"./frames/frame{i}.png")
-            crop = original.crop((50, 100, 1150, 3500))
-            resized = crop.resize((int(1150 / 4.7), int(3500 / 4.7)), Image.LANCZOS)
+            # crop = original.crop((50, 100, 1150, 3500))
+            # resized = crop.resize((int(1150 / 4.7), int(3500 / 4.7)), Image.LANCZOS)
+            resized = original.resize((int(1000 / 2), int(1480 / 2)), Image.LANCZOS)
             image = ImageTk.PhotoImage(resized)
 
             self.frames.append(image)
@@ -126,7 +128,7 @@ class app:
 
         self.timerLabel = tk.Label(
             self.cameraPage,
-            text=f"{self.index + 1}번째 사진!\n{self.timer}초 뒤 촬영합니다.",
+            text=f"{self.index + 1}번째 사진!\n\n{self.timer}",
             font=("Arial", 60),
             fg="black",
             bg="white",
@@ -137,9 +139,7 @@ class app:
 
     def updateTimer(self):
         self.timer -= 1
-        self.timerLabel.configure(
-            text=f"{self.index + 1}번째 사진!\n{self.timer}초 뒤 촬영합니다."
-        )
+        self.timerLabel.configure(text=f"{self.index + 1}번째 사진!\n\n{self.timer}")
 
         if self.timer > 0:
             self.window.after(1000, self.updateTimer)
