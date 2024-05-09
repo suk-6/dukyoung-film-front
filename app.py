@@ -13,10 +13,14 @@ load_dotenv()
 
 PROCESSING_URL = os.getenv("PROCESSING_URL")
 
+
 class app:
     def __init__(self):
         self.window = tk.Tk()
         self.window.title("Dukyoung Film")
+
+        self.positionRight = self.window.winfo_screenwidth() / 2
+        self.positionDown = self.window.winfo_screenheight() / 2
 
         # Full Screen
         self.window.attributes("-fullscreen", True)
@@ -27,25 +31,20 @@ class app:
         self.window.configure(bg="white")
 
         # Start Page
-        self.startPage = tk.Frame(self.window, bg="white")
-        self.startPage.pack(expand=True)
-
-        self.startPageTitle = tk.Label(
-            self.startPage,
-            text="Dukyoung Film",
-            font=("Arial", 100),
-            fg="black",
-            bg="white",
+        self.frameView = tk.Frame(self.window, bg="white")
+        self.frameView.place(
+            x=self.positionRight, y=self.positionDown, anchor=tk.CENTER
         )
-        self.startPageTitle.pack(pady=100)
 
-        self.startPageInfo = tk.Label(
-            self.startPage,
-            text="시작하려면 화면을 터치하세요",
-            font=("Arial", 30),
-            fg="black",
+        mainImage = Image.open("./static/main.png")
+        mainImage = mainImage.resize((1920, 1080), Image.LANCZOS)
+        mainImage = ImageTk.PhotoImage(mainImage)
+
+        self.startPage = tk.Label(
+            self.frameView,
+            image=mainImage,
         )
-        self.startPageInfo.pack(pady=100)
+        self.startPage.pack(pady=100)
 
         self.window.bind("<Button-1>", self.selectFrame)
 
@@ -76,8 +75,10 @@ class app:
 
         for i in range(self.frameCount):
             frameLabel = tk.Label(self.framePage, image=self.frames[i])
-            frameLabel.bind("<Button-1>", lambda event, frame=i: self.startCamera(event, frame))
-            frameLabel.grid(row = 1, column = i, padx=15)
+            frameLabel.bind(
+                "<Button-1>", lambda event, frame=i: self.startCamera(event, frame)
+            )
+            frameLabel.grid(row=1, column=i, padx=15)
 
         self.frameLabels = [frameLabel]
 
@@ -124,7 +125,11 @@ class app:
         self.index = 0
 
         self.timerLabel = tk.Label(
-            self.cameraPage, text=f"{self.index + 1}번째 사진!\n{self.timer}초 뒤 촬영합니다.", font=("Arial", 60), fg="black", bg="white"
+            self.cameraPage,
+            text=f"{self.index + 1}번째 사진!\n{self.timer}초 뒤 촬영합니다.",
+            font=("Arial", 60),
+            fg="black",
+            bg="white",
         )
         self.timerLabel.pack()
 
@@ -132,7 +137,9 @@ class app:
 
     def updateTimer(self):
         self.timer -= 1
-        self.timerLabel.configure(text=f"{self.index + 1}번째 사진!\n{self.timer}초 뒤 촬영합니다.")
+        self.timerLabel.configure(
+            text=f"{self.index + 1}번째 사진!\n{self.timer}초 뒤 촬영합니다."
+        )
 
         if self.timer > 0:
             self.window.after(1000, self.updateTimer)
@@ -155,8 +162,8 @@ class app:
         image = self.centerCrop(image)
 
         cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        image = cv2.imencode('.png', image)
-        self.images[self.index] = base64.b64encode(image[1]).decode('utf-8')
+        image = cv2.imencode(".png", image)
+        self.images[self.index] = base64.b64encode(image[1]).decode("utf-8")
 
     def centerCrop(self, image):
         height, width = image.shape[:2]
@@ -165,10 +172,10 @@ class app:
         top = (height - targetHeight) // 2
         left = (width - targetWidth) // 2
 
-        cropped = image[top:top+targetHeight, left:left+targetWidth]
+        cropped = image[top : top + targetHeight, left : left + targetWidth]
 
         return cropped
-    
+
     def updateCamera(self):
         try:
             _, frame = self.camera.read()
@@ -202,7 +209,9 @@ class app:
 
         # Process images
         try:
-            self.req = requests.post(PROCESSING_URL, json={"images": self.images, "frame": self.frame})
+            self.req = requests.post(
+                PROCESSING_URL, json={"images": self.images, "frame": self.frame}
+            )
             self.req = json.loads(self.req.text)
         except Exception as e:
             print(f"Processing failed!\n{e}")
@@ -223,7 +232,9 @@ class app:
         self.image = Image.open(BytesIO(base64.b64decode(self.req["image"])))
         self.printImage = Image.open(BytesIO(base64.b64decode(self.req["printImage"])))
 
-        self.resultImage = self.printImage.resize((int(1200 / 2), int(3552 / 4)), Image.LANCZOS)
+        self.resultImage = self.printImage.resize(
+            (int(1200 / 2), int(3552 / 4)), Image.LANCZOS
+        )
         self.resultImage = ImageTk.PhotoImage(self.resultImage)
         self.resultLabel = tk.Label(self.resultPage, image=self.resultImage)
         self.resultLabel.pack(pady=100)
@@ -238,10 +249,11 @@ class app:
         if os.path.exists("print") == False:
             os.mkdir("print")
 
-        self.printImage.save(os.path.join('print', f"{self.req['id']}.png"))
-        
+        self.printImage.save(os.path.join("print", f"{self.req['id']}.png"))
+
         from printer import printer
-        printer(os.path.join('print', f"{self.req['id']}.png"))
+
+        printer(os.path.join("print", f"{self.req['id']}.png"))
 
     def restart(self):
         self.window.destroy()
