@@ -128,7 +128,7 @@ class app:
 
         self.timerLabel = tk.Label(
             self.cameraPage,
-            text=f"{self.index + 1}번째 사진!\n\n{self.timer}",
+            text=f"{self.index + 1}번째 사진! {self.timer}!",
             font=("Arial", 60),
             fg="black",
             bg="white",
@@ -139,7 +139,7 @@ class app:
 
     def updateTimer(self):
         self.timer -= 1
-        self.timerLabel.configure(text=f"{self.index + 1}번째 사진!\n\n{self.timer}")
+        self.timerLabel.configure(text=f"{self.index + 1}번째 사진! {self.timer}!")
 
         if self.timer > 0:
             self.window.after(1000, self.updateTimer)
@@ -167,7 +167,7 @@ class app:
 
     def centerCrop(self, image):
         height, width = image.shape[:2]
-        targetHeight, targetWidth = 650, 1000
+        targetHeight, targetWidth = 500 * 2, 430 * 2
 
         top = (height - targetHeight) // 2
         left = (width - targetWidth) // 2
