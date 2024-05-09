@@ -111,7 +111,7 @@ class app:
         self.cameraPage = tk.Frame(self.window, bg="white")
         self.cameraPage.pack(expand=True)
 
-        self.camera = cv2.VideoCapture(0)
+        self.camera = cv2.VideoCapture(1)
         self.camera.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
         self.camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
