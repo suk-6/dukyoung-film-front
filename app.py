@@ -8,13 +8,11 @@ from dotenv import load_dotenv
 import json
 from io import BytesIO
 import platform
+from playsound import playsound
 
 load_dotenv()
 
 PROCESSING_URL = os.getenv("PROCESSING_URL")
-
-if platform.system() == "Windows":
-    from playsound import playsound
 
 
 class app:
@@ -144,6 +142,8 @@ class app:
         self.timer -= 1
         self.timerLabel.configure(text=f"{self.index + 1}번째 사진! {self.timer}!")
 
+        if self.timer == 0:
+            playsound("./static/shutter.mp3")
         if self.timer > 0:
             self.window.after(1000, self.updateTimer)
         else:
@@ -160,9 +160,6 @@ class app:
                 self.processImages()
 
     def takePhoto(self):
-        if platform.system() == "Windows":
-            playsound("./static/shutter.mp3")
-
         _, image = self.camera.read()
         image = cv2.flip(image, 1)
         image = self.centerCrop(image)
