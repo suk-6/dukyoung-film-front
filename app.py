@@ -213,7 +213,9 @@ class app:
         # Process images
         try:
             self.req = requests.post(
-                PROCESSING_URL, json={"images": self.images, "frame": self.frame}
+                PROCESSING_URL,
+                json={"images": self.images, "frame": self.frame},
+                verify=False,
             )
             self.req = json.loads(self.req.text)
         except Exception as e:
